@@ -1,4 +1,4 @@
-# Hardhat folders
+## Hardhat folders
 # Node modules
 /node_modules
 
@@ -20,6 +20,7 @@
 # Hardhat coverage reports
 /coverage
 
+/edr-fork-cache
 
 # Logs
 logs
