@@ -11,7 +11,8 @@ import { sign } from "node:crypto";
 import { getContract, parseAbi, parseEther } from "viem";
 
 describe("NNC Token", async () => {
-    const {viem} = await network.connect("giwaSepoliaForked");
+    // const {viem} = await network.connect("giwaSepoliaForked");
+    const {viem} = await network.connect("sepoliaForked");
 
     const [signer, acc1] = await viem.getWalletClients();
 

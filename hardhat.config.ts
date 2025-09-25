@@ -2,9 +2,6 @@ import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
 import { configVariable } from "hardhat/config";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin],
@@ -38,6 +35,16 @@ const config: HardhatUserConfig = {
       chainType: "l1",
       url: configVariable("SEPOLIA_RPC_URL"),
       accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
+    },
+    sepoliaForked: {
+      type: "edr-simulated",
+      chainType: "l1",
+      chainId: 11155111,
+      forking: {
+        enabled: true,
+        url: "https://sepolia.drpc.org",
+        blockNumber: 9275214
+      }
     },
     giwaSepolia: {
       type: "http",
