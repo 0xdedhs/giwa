@@ -1,18 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+
+// Taked source from https://sepolia-explorer.giwa.io/address/0xB11E5c9070a57C0c33Df102436C440a2c73a4c38?tab=contract
+
 // Contracts
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import { ERC20Permit } from "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 
 // Libraries
-import { Preinstalls } from "./Preinstalls.sol";
+import {Preinstalls} from "./Preinstalls.sol";
 
 // Interfaces
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
-import { ISemver } from "./interfaces/universal/ISemver.sol";
-import { IOptimismMintableERC20 } from "./interfaces/universal/IOptimismMintableERC20.sol";
-import { ILegacyMintableERC20 } from "./interfaces/legacy/ILegacyMintableERC20.sol";
+import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import {ISemver} from "./interfaces/universal/ISemver.sol";
+import {IOptimismMintableERC20} from "./interfaces/universal/IOptimismMintableERC20.sol";
+import {ILegacyMintableERC20} from "./interfaces/legacy/ILegacyMintableERC20.sol";
 
 /// @title OptimismMintableERC20
 /// @notice OptimismMintableERC20 is a standard extension of the base ERC20 token contract designed
@@ -42,7 +45,10 @@ contract BridgetNNCToken is ERC20Permit, ISemver {
 
     /// @notice A modifier that only allows the bridge to call
     modifier onlyBridge() {
-        require(msg.sender == BRIDGE, "OptimismMintableERC20: only bridge can mint and burn");
+        require(
+            msg.sender == BRIDGE,
+            "OptimismMintableERC20: only bridge can mint and burn"
+        );
         _;
     }
 
@@ -68,10 +74,7 @@ contract BridgetNNCToken is ERC20Permit, ISemver {
         string memory _name,
         string memory _symbol,
         uint8 _decimals
-    )
-        ERC20(_name, _symbol)
-        ERC20Permit(_name)
-    {
+    ) ERC20(_name, _symbol) ERC20Permit(_name) {
         REMOTE_TOKEN = _remoteToken;
         BRIDGE = _bridge;
         DECIMALS = _decimals;
@@ -92,7 +95,10 @@ contract BridgetNNCToken is ERC20Permit, ISemver {
     /// @param _owner   owner of the tokens.
     /// @param _spender spender of the tokens.
     /// @return Allowance for the spender.
-    function allowance(address _owner, address _spender) public view override returns (uint256) {
+    function allowance(
+        address _owner,
+        address _spender
+    ) public view override returns (uint256) {
         if (_spender == PERMIT2()) {
             return type(uint256).max;
         }
@@ -118,13 +124,18 @@ contract BridgetNNCToken is ERC20Permit, ISemver {
     /// @notice ERC165 interface check function.
     /// @param _interfaceId Interface ID to check.
     /// @return Whether or not the interface is supported by this contract.
-    function supportsInterface(bytes4 _interfaceId) external pure virtual returns (bool) {
+    function supportsInterface(
+        bytes4 _interfaceId
+    ) external pure virtual returns (bool) {
         bytes4 iface1 = type(IERC165).interfaceId;
         // Interface corresponding to the legacy L2StandardERC20.
         bytes4 iface2 = type(ILegacyMintableERC20).interfaceId;
         // Interface corresponding to the updated OptimismMintableERC20 (this contract).
         bytes4 iface3 = type(IOptimismMintableERC20).interfaceId;
-        return _interfaceId == iface1 || _interfaceId == iface2 || _interfaceId == iface3;
+        return
+            _interfaceId == iface1 ||
+            _interfaceId == iface2 ||
+            _interfaceId == iface3;
     }
 
     /// @custom:legacy

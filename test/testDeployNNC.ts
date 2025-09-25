@@ -28,7 +28,7 @@ describe("NNC Token", async () => {
 
     const BALANCE = parseEther('10000000');
 
-    it('Could balanceOf equal 10_000_000 ether', async () => {
+    it('Should balanceOf equal 10_000_000 ether', async () => {
         const balanceof = await nnc.read.balanceOf([signer.account.address]);
         assert.equal(BALANCE, balanceof);
     })
